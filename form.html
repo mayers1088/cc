@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Form</title>
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 20%;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: smaller;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form id="financial-form">
+        <div class="form-group">
+            <label for="fico-score">FICO Score</label>
+            <input type="number" id="fico-score" name="fico-score">
+            <small>Enter Acceptable Low Threshold</small>
+        </div>
+
+        <div class="form-group">
+            <label for="avg-gross-income">Avg. Gross Income</label>
+            <input type="number" id="avg-gross-income" name="avg-gross-income">
+            <small>Enter Acceptable Low Threshold</small>
+        </div>
+
+        <div class="form-group">
+            <label for="automobile-debt">Automobile Debt</label>
+            <input type="number" id="automobile-debt" name="automobile-debt">
+            <small>Enter Acceptable Low Threshold</small>
+        </div>
+
+        <div class="form-group">
+            <label for="current-revolving-debt">Current Revolving Debt</label>
+            <input type="number" id="current-revolving-debt" name="current-revolving-debt">
+            <small>Enter Acceptable High Threshold</small>
+        </div>
+
+        <div class="form-group">
+            <label for="mortgage-debt">Mortgage Debt</label>
+            <input type="number" id="mortgage-debt" name="mortgage-debt">
+            <small>Enter Acceptable High Threshold</small>
+        </div>
+
+        <div class="form-group">
+            <label for="debt-to-income">Debt to Income %</label>
+            <input type="text" id="debt-to-income" name="debt-to-income" readonly>
+            <small>Calculated as Avg. Gross Income / (Revolving Debt + Mortgage Debt)</small>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function calculateDebtToIncome() {
+            var avgGrossIncome = document.getElementById('avg-gross-income').value;
+            var revolvingDebt = document.getElementById('current-revolving-debt').value;
+            var mortgageDebt = document.getElementById('mortgage-debt').value;
+
+            if (avgGrossIncome && (revolvingDebt || mortgageDebt)) {
+                var debtToIncome = (parseFloat(avgGrossIncome) / (parseFloat(revolvingDebt) + parseFloat(mortgageDebt))) * 100;
+                document.getElementById('debt-to-income').value = debtToIncome.toFixed(2) + '%';
+            } else {
+                document.getElementById('debt-to-income').value = '';
+            }
+        }
+
+        document.getElementById('avg-gross-income').addEventListener('input', calculateDebtToIncome);
+        document.getElementById('current-revolving-debt').addEventListener('input', calculateDebtToIncome);
+        document.getElementById('mortgage-debt').addEventListener('input', calculateDebtToIncome);
+    </script>
+</body>
+</html>
